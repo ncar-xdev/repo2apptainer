@@ -1,5 +1,7 @@
 from repo2docker.app import Repo2Docker
 
+from . import __version__
+
 
 class Repo2Singularity(Repo2Docker):
     """
@@ -7,7 +9,7 @@ class Repo2Singularity(Repo2Docker):
     """
 
     name = 'repo2singularity'
-    version = '0.0.1'
+    version = __version__
     description = __doc__
 
     def build_sif(self):
