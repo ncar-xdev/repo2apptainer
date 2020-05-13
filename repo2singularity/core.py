@@ -85,8 +85,7 @@ def get_argparser():
     argparser.add_argument(
         'repo',
         help=(
-            'Path to repository that should be built. Could be '
-            'local path or a git URL.'
+            'Path to repository that should be built. Could be local path or a git URL.'
         ),
     )
 
