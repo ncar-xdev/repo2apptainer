@@ -1,6 +1,10 @@
+from pkg_resources import DistributionNotFound, get_distribution
 from repo2docker.app import Repo2Docker
 
-from . import __version__
+try:
+    __version__ = get_distribution(__name__).version
+except DistributionNotFound:
+    __version__ = '0.0.0'
 
 
 class Repo2Singularity(Repo2Docker):
