@@ -42,6 +42,15 @@ jobs:
           ./mconfig && \
           make -C builddir && \
           sudo make -C builddir install
+      - name: Decrypt sylabs token
+        run: ./.github/scripts/decrypt_secret.sh
+        env:
+          SYLABS_TOKEN: ${{ secrets.SYLABS_TOKEN }}
+
+      - name: Ensure the token in properly decrypted
+        run: |
+         singularity remote login --tokenfile $HOME/secrets/sylabs-token
+
       - uses: goanpeca/setup-miniconda@v1
         with:
           auto-update-conda: true
