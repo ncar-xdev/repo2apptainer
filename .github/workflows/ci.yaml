@@ -61,7 +61,12 @@ jobs:
           python -m pip install -e .
           conda list
 
-      - name: Smoke Test
+      - name: Build and Push Test
         shell: bash -l {0}
         run: |
-         repo2singularity --push https://github.com/norvig/pytudes
+         repo2singularity --push https://github.com/binder-examples/continuous-build
+
+      - name: Pull Test
+        shell: bash -l {0}
+        run: |
+         singularity pull library://andersy005/test/r2dhttps-3a-2f-2fgithub-2ecom-2fbinder-2dexamples-2fcontinuous-2dbuild-2egit17f9fa8

@@ -1,5 +1,6 @@
 import os
 import subprocess
+import sys
 from pathlib import Path
 
 from pkg_resources import DistributionNotFound, get_distribution
@@ -67,10 +68,4 @@ class Repo2Singularity(Repo2Docker):
 
 
 def run_command(command):
-    process = subprocess.Popen(command, stdout=subprocess.PIPE)
-    while True:
-        output = process.stdout.readline()
-        if output == '' and process.poll() is not None:
-            break
-        if output:
-            print(output.strip())
+    _ = subprocess.check_call(command, stdout=sys.stdout, stderr=sys.stderr)
