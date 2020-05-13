@@ -64,4 +64,4 @@ jobs:
       - name: Smoke Test
         shell: bash -l {0}
         run: |
-         repo2singularity https://github.com/norvig/pytudes
+         repo2singularity --push https://github.com/norvig/pytudes

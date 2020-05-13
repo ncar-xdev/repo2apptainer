@@ -74,5 +74,3 @@ def run_command(command):
             break
         if output:
             print(output.strip())
-    rc = process.poll()
-    return rc
