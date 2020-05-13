@@ -33,7 +33,7 @@ setup(
     install_requires=INSTALL_REQUIREs,
     license='Apache 2.0',
     zip_safe=False,
-    entry_points={},
+    entry_points={'console_scripts': ['repo2singularity = repo2singularity.core:main']},
     keywords='reproducible science environments docker singularity',
     use_scm_version={'version_scheme': 'post-release', 'local_scheme': 'dirty-tag'},
     setup_requires=['setuptools_scm', 'setuptools>=30.3.0'],

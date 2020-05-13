@@ -1,0 +1,2 @@
+jupyter-repo2docker
+spython
