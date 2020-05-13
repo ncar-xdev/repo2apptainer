@@ -53,5 +53,6 @@ jobs:
           conda list
 
       - name: Smoke Test
+        shell: /bin/bash -e {0}
         run: |
          repo2singularity https://github.com/norvig/pytudes
