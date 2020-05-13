@@ -40,7 +40,7 @@ def validate_image_name(image_name):
     return image_name
 
 
-# See https://github.com/jupyter/Repo2Singularity/issues/871 for reason
+# See https://github.com/jupyter/repo2docker/issues/871 for reason
 class MimicDockerEnvHandling(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):
         # There are 3 cases:
@@ -69,8 +69,8 @@ def get_argparser():
 
     argparser.add_argument(
         '--config',
-        default='Repo2Singularity_config.py',
-        help='Path to config file for Repo2Singularity',
+        default='repo2singularity_config.py',
+        help='Path to config file for repo2singularity',
     )
 
     argparser.add_argument(
@@ -188,7 +188,7 @@ def get_argparser():
         '--version',
         dest='version',
         action='store_true',
-        help='Print the Repo2Singularity version and exit.',
+        help='Print the repo2singularity version and exit.',
     )
 
     argparser.add_argument(
@@ -298,11 +298,11 @@ def make_r2s(argv=None):
     if r2s.user_id == 0 and not r2s.dry_run:
         print('Root as the primary user in the image is not permitted.')
         print(
-            'The uid and the username of the user invoking Repo2Singularity '
+            'The uid and the username of the user invoking repo2singularity '
             'is used to create a mirror account in the image by default. '
             'To override that behavior pass --user-id <numeric_id> and '
-            ' --user-name <string> to Repo2Singularity.\n'
-            'Please see Repo2Singularity --help for more details.\n'
+            ' --user-name <string> to repo2singularity.\n'
+            'Please see repo2singularity --help for more details.\n'
         )
         sys.exit(1)
 
