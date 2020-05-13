@@ -56,7 +56,7 @@ class Repo2Singularity(Repo2Docker):
             'push',
             '-U',
             self.sif_image,
-            f'library://andersy005/test/{self.output_image_spec}',
+            f'library://andersy005/test/{self.output_image_spec}:latest',
         ]
         run_command(cmd)
 
