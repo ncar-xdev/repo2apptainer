@@ -16,6 +16,32 @@ jobs:
         os: ['ubuntu-latest']
         python-version: ['3.6', '3.7', '3.8']
     steps:
+      - name: Install apt-get dependencies
+        run: |
+          sudo apt-get update && sudo apt-get install -y \
+          build-essential \
+          libssl-dev \
+          uuid-dev \
+          libgpgme11-dev \
+          squashfs-tools \
+          libseccomp-dev \
+          wget \
+          pkg-config \
+          git \
+          cryptsetup
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '^1.13.1'
+      - name: Install Singularity
+        run: |
+          export VERSION=3.5.3 && # adjust this as necessary \
+          wget https://github.com/sylabs/singularity/releases/download/v${VERSION}/singularity-${VERSION}.tar.gz && \
+          tar -xzf singularity-${VERSION}.tar.gz && \
+          cd singularity && \
+          ./mconfig && \
+          make -C builddir && \
+          sudo make -C builddir install
       - uses: goanpeca/setup-miniconda@v1
         with:
           auto-update-conda: true
