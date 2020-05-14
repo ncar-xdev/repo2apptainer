@@ -22,7 +22,7 @@ CLASSIFIERS = [
 
 setup(
     name='repo2singularity',
-    description='Repo2singularity: Turn code repositories into Jupyter enabled Singularity Images',
+    description='Repo2singularity: Wrapper around repo2docker producing producing Jupyter enabled Singularity images.',
     long_description=LONG_DESCRIPTION,
     python_requires='>=3.6',
     maintainer='Anderson Banihirwe',

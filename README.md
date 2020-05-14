@@ -1,3 +1,3 @@
 # Repo2singularity
 
-Turn code repositories into Jupyter enabled Singularity images.
+Wrapper around [repo2docker](https://github.com/jupyter/repo2docker) producing Jupyter enabled Singularity images.
