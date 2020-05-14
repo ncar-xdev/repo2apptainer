@@ -2,9 +2,7 @@
 """ Top-level module for repo2singularity. """
 from pkg_resources import DistributionNotFound, get_distribution
 
-from .app import Repo2Singularity  # noqa: F401
-
 try:
-    __version__ = get_distribution(__name__).version
+    __version__ = get_distribution(__name__).version  # noqa: F401
 except DistributionNotFound:  # noqa: F401
-    __version__ = '0.0.0'
+    __version__ = '0.0.0'  # noqa: F401
