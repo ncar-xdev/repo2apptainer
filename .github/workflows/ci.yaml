@@ -64,9 +64,9 @@ jobs:
       - name: Build and Push Test
         shell: bash -l {0}
         run: |
-         repo2singularity --push --image-name binder-examples/continuous-build https://github.com/binder-examples/continuous-build
+         repo2singularity --push --image-name binder-examples-continuous-build https://github.com/binder-examples/continuous-build
 
       - name: Pull Test
         shell: bash -l {0}
         run: |
-         singularity pull library://andersy005/test/binder-examples/continuous-build:latest
+         singularity pull library://andersy005/test/binder-examples-continuous-build:latest
