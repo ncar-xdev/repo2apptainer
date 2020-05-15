@@ -31,7 +31,7 @@ class Repo2Singularity(Repo2Docker):
 
     def build_sif(self):
         docker_uri = f'docker-daemon://{self.output_image_spec}:latest'
-        image, builder = Client.build(docker_uri, image=self.sif_image, stream=True)
+        image, builder = Client.build(docker_uri, image=self.sif_image, stream=True, force=True)
         print('\nBuilding singularity container from the built docker image...')
         print(image)
 
@@ -119,6 +119,14 @@ class Repo2Singularity(Repo2Docker):
                 except Exception:
                     sys.exit(0)
 
+    def run_image(self):
+        """Run docker container from built image
+        """
+
+        self.create_container_sandbox()
+        self.start_container()
+        # TODO: wait for it to finish.
+
     def start(self):
         self.build()
         self.singularity_image_name = f'{self.output_image_spec}.sif'
@@ -128,5 +136,5 @@ class Repo2Singularity(Repo2Docker):
         self.build_sif()
         if self.push:
             self.push_image()
-        self.create_container_sandbox()
-        self.start_container()
+        if self.run:
+            self.run_image()
