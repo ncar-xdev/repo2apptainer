@@ -69,7 +69,7 @@ jobs:
       - name: Inspect Built Images
         shell: bash -l {0}
         run: |
-          cd .singularity/cache/repo2singularity
+          cd ~/.singularity/cache/repo2singularity
           for image in *; do
              singularity inspect "$image";
           done
