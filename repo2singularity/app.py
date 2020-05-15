@@ -30,31 +30,39 @@ class Repo2Singularity(Repo2Docker):
     description = __doc__
 
     def build_sif(self):
+        """
+        Build Singularity Image File (SIF) from built docker image
+        """
         docker_uri = f'docker-daemon://{self.output_image_spec}:latest'
         image, builder = Client.build(docker_uri, image=self.sif_image, stream=True, force=True)
-        print('\nBuilding singularity container from the built docker image...')
-        print(image)
+        self.log.info(
+            '\nBuilding singularity container from the built docker image...\n',
+            extra=dict(phase='building'),
+        )
+        self.log.info(image, extra=dict(phase='building'))
 
         for line in builder:
-            print(line)
+            print(line, end='')
 
     def push_image(self):
         """
         Push Singularity image to registry
         """
+        URI = f'library://{self.username_collection}/{self.output_image_spec}:latest'
 
         self.log.info(
-            'Pushing image\n', extra=dict(phase='pushing'),
+            f'Pushing image to {URI}\n', extra=dict(phase='pushing'),
         )
-
         cmd = [
             'singularity',
             'push',
             '-U',
             self.sif_image,
-            f'library://andersy005/test/{self.output_image_spec}:latest',
+            URI,
         ]
-        stream_command(cmd)
+
+        for line in stream_command(cmd):
+            print(line, end='')
 
     def create_container_sandbox(self):
         """
@@ -69,10 +77,10 @@ class Repo2Singularity(Repo2Docker):
             stream=True,
             force=True,
         )
-        print(image)
+        self.log.info(image, extra=dict(phase='launching'))
         for line in builder:
             try:
-                print(line)
+                print(line, end='')
             except Exception:
                 sys.exit(0)
 
@@ -115,7 +123,7 @@ class Repo2Singularity(Repo2Docker):
             )
             for line in executor:
                 try:
-                    print(line)
+                    print(line, end='')
                 except Exception:
                     sys.exit(0)
 
@@ -128,12 +136,15 @@ class Repo2Singularity(Repo2Docker):
         # TODO: wait for it to finish.
 
     def start(self):
-        self.build()
+
         self.singularity_image_name = f'{self.output_image_spec}.sif'
         self.sif_image = f'{REPO2SINGULARITY_CACHEDIR}/{self.singularity_image_name}'
         self.sandbox_name = f'sandbox-{self.output_image_spec}'
         self.container_sandbox_dir = f'{TMPDIR}/{self.sandbox_name}'
+
+        self.build()
         self.build_sif()
+
         if self.push:
             self.push_image()
         if self.run:

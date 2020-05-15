@@ -61,10 +61,19 @@ jobs:
           python -m pip install -e .
           conda list
 
-      - name: Build and Push Test
+      - name: Build Test
         shell: bash -l {0}
         run: |
-         repo2singularity --image-name binder-examples-continuous-build https://github.com/binder-examples/continuous-build
+         repo2singularity https://github.com/binder-examples/continuous-build
+
+      - name: Inspect Built Images
+        shell: bash -l {0}
+        run: |
+          cd .singularity/cache/repo2singularity
+          for image in *; do
+             singularity inspect "$image";
+          done
+
 
       # - name: Pull Test
       #   shell: bash -l {0}

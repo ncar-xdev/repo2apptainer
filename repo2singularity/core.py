@@ -115,6 +115,14 @@ def cli(
     push: bool = typer.Option(
         False, show_default=True, help='Push singularity image to image registry.'
     ),
+    username_collection: str = typer.Option(
+        '',
+        show_default=True,
+        help=(
+            'Username and collection to use when constructing image URI before pushing it to the registry. '
+            'For example, user/collection: `milkshake/chocolate`. Used in conjunction with --push.'
+        ),
+    ),
     run: bool = typer.Option(
         False, show_default=True, help='Run container after it has been built.'
     ),
@@ -143,8 +151,14 @@ def cli(
         r2s.output_image_spec = generate_image_name(repo, resolved_ref)
 
     r2s.json_logs = json_logs
+    r2s.run = run
     if debug:
         r2s.log_level = logging.DEBUG
+
+    if push and not username_collection:
+        raise ValueError('Missing `user/collection` component for the image URI.')
+    r2s.push = push
+    r2s.username_collection = username_collection
     r2s.initialize()
     r2s.start()
 

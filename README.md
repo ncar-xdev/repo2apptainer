@@ -21,6 +21,12 @@ Options:
   --push / --no-push            Push singularity image to image registry.
                                 [default: False]
 
+  --username-collection TEXT    Username and collection to use when
+                                constructing image URI before pushing it to
+                                the registry. For example, user/collection:
+                                `milkshake/chocolate`. Used in conjunction
+                                with --push.  [default: ]
+
   --run / --no-run              Run container after it has been built.
                                 [default: False]
 
