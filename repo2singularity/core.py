@@ -32,11 +32,11 @@ def resolve_ref(repo_url, ref):
     all_refs = [line.split('\t') for line in stdout.strip().split('\n')]
     for git_hash, ref in all_refs:
         if ref in (f'refs/heads/{ref}', f'refs/heads/{ref}'):
-            return str(git_hash)[:8]  # Return first 8 characters
+            return git_hash[:7]  # Return first 7 characters
 
     if stdout:
-        return stdout.split()[0]
-    return ref
+        return stdout.split()[0][:7]
+    return ref[:7]
 
 
 def generate_image_name(repo, resolved_ref):
@@ -149,6 +149,7 @@ def cli(
         r2s.output_image_spec = image_name
     else:
         r2s.output_image_spec = generate_image_name(repo, resolved_ref)
+    print(r2s.output_image_spec)
 
     r2s.json_logs = json_logs
     r2s.run = run
