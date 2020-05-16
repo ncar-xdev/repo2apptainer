@@ -1,5 +1,4 @@
 import os
-import sys
 import tempfile
 from pathlib import Path
 
@@ -39,7 +38,6 @@ class Repo2Singularity(Repo2Docker):
             '\nBuilding singularity container from the built docker image...\n',
             extra=dict(phase='building'),
         )
-        self.log.info(image, extra=dict(phase='building'))
 
         for line in builder:
             print(line, end='')
@@ -77,12 +75,9 @@ class Repo2Singularity(Repo2Docker):
             stream=True,
             force=True,
         )
-        self.log.info(image, extra=dict(phase='launching'))
+        self.log.info(f'Creating sandbox directory {image}\n', extra=dict(phase='launching'))
         for line in builder:
-            try:
-                print(line, end='')
-            except Exception:
-                sys.exit(0)
+            print(line, end='')
 
     def start_container(self):
         """
@@ -119,13 +114,10 @@ class Repo2Singularity(Repo2Docker):
 
         with chdir(Path(self.container_sandbox_dir).parent):
             executor = Client.execute(
-                image=self.sandbox_name, writable=True, command=run_cmd, stream=True, quiet=False
+                image=self.sandbox_name, writable=True, command=run_cmd, stream=True, quiet=True
             )
             for line in executor:
-                try:
-                    print(line, end='')
-                except Exception:
-                    sys.exit(0)
+                print(line, end='')
 
     def run_image(self):
         """Run docker container from built image
@@ -141,6 +133,9 @@ class Repo2Singularity(Repo2Docker):
         self.sif_image = f'{REPO2SINGULARITY_CACHEDIR}/{self.singularity_image_name}'
         self.sandbox_name = f'sandbox-{self.output_image_spec}'
         self.container_sandbox_dir = f'{TMPDIR}/{self.sandbox_name}'
+
+        if self.run and os.path.exists(self.sif_image):
+            self.run_image()
 
         self.build()
         self.build_sif()

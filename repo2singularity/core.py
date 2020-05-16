@@ -149,7 +149,6 @@ def cli(
         r2s.output_image_spec = image_name
     else:
         r2s.output_image_spec = generate_image_name(repo, resolved_ref)
-    print(r2s.output_image_spec)
 
     r2s.json_logs = json_logs
     r2s.run = run
