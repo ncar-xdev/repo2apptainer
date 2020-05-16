@@ -30,9 +30,9 @@ def resolve_ref(repo_url, ref):
     # (so refs/head/<ref>), we get all refs and check if either
     # exists
     all_refs = [line.split('\t') for line in stdout.strip().split('\n')]
-    for hash, ref in all_refs:
+    for git_hash, ref in all_refs:
         if ref in (f'refs/heads/{ref}', f'refs/heads/{ref}'):
-            return hash
+            return str(git_hash)[:8]  # Return first 8 characters
 
     if stdout:
         return stdout.split()[0]
