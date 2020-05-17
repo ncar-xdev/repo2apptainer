@@ -1,7 +1,9 @@
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/andersy005/repo2singularity/CI?logo=github&style=for-the-badge)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/andersy005/repo2singularity/code-style?label=code%20style&logo=github&style=for-the-badge)
+
 # Repo2singularity
 
 Wrapper around [repo2docker](https://github.com/jupyter/repo2docker) producing Jupyter enabled Singularity images.
-
 
 ## Usage
 
@@ -21,11 +23,12 @@ Options:
   --push / --no-push            Push singularity image to image registry.
                                 [default: False]
 
-  --username-collection TEXT    Username and collection to use when
-                                constructing image URI before pushing it to
-                                the registry. For example, user/collection:
+  --username-prefix TEXT        Username and prefix to use when constructing
+                                image URI before pushing it to or pulling it
+                                from the registry. For example, user/prefix:
                                 `milkshake/chocolate`. Used in conjunction
-                                with --push.  [default: ]
+                                with --push and --run (to pull existing
+                                image).  [default: ]
 
   --run / --no-run              Run container after it has been built.
                                 [default: False]

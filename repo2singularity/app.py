@@ -46,7 +46,7 @@ class Repo2Singularity(Repo2Docker):
         """
         Push Singularity image to registry
         """
-        URI = f'library://{self.username_collection}/{self.output_image_spec}:latest'
+        URI = f'library://{self.username_prefix}/{self.output_image_spec}:latest'
 
         self.log.info(
             f'Pushing image to {URI}\n', extra=dict(phase='pushing'),
@@ -136,6 +136,19 @@ class Repo2Singularity(Repo2Docker):
 
         if self.run and os.path.exists(self.sif_image):
             self.run_image()
+
+        elif self.run and self.username_prefix:
+            try:
+                URI = f'library://{self.username_prefix}/{self.output_image_spec}'
+                image, puller = Client.pull(
+                    URI, pull_folder=REPO2SINGULARITY_CACHEDIR.as_posix(), force=True, stream=True
+                )
+                for line in puller:
+                    print(line, end='')
+
+                self.run_image()
+            except Exception:
+                pass
 
         self.build()
         self.build_sif()

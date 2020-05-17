@@ -115,12 +115,12 @@ def cli(
     push: bool = typer.Option(
         False, show_default=True, help='Push singularity image to image registry.'
     ),
-    username_collection: str = typer.Option(
+    username_prefix: str = typer.Option(
         '',
         show_default=True,
         help=(
-            'Username and collection to use when constructing image URI before pushing it to the registry. '
-            'For example, user/collection: `milkshake/chocolate`. Used in conjunction with --push.'
+            'Username and prefix to use when constructing image URI before pushing it to or pulling it from the registry. '
+            'For example, user/prefix: `milkshake/chocolate`. Used in conjunction with --push and --run (to pull existing image).'
         ),
     ),
     run: bool = typer.Option(
@@ -155,10 +155,10 @@ def cli(
     if debug:
         r2s.log_level = logging.DEBUG
 
-    if push and not username_collection:
-        raise ValueError('Missing `user/collection` component for the image URI.')
+    if push and not username_prefix:
+        raise ValueError('Missing `user/prefix component for the image URI.')
     r2s.push = push
-    r2s.username_collection = username_collection
+    r2s.username_prefix = username_prefix
     r2s.initialize()
     r2s.start()
 
