@@ -141,7 +141,11 @@ class Repo2Singularity(Repo2Docker):
             try:
                 URI = f'library://{self.username_prefix}/{self.output_image_spec}'
                 image, puller = Client.pull(
-                    URI, pull_folder=REPO2SINGULARITY_CACHEDIR.as_posix(), force=True, stream=True
+                    URI,
+                    pull_folder=REPO2SINGULARITY_CACHEDIR.as_posix(),
+                    force=True,
+                    stream=True,
+                    singularity_options=['--allow-unsigned'],
                 )
                 for line in puller:
                     print(line, end='')
