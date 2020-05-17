@@ -1,3 +1,2 @@
 jupyter-repo2docker
-spython
 typer

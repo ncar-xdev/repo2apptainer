@@ -1,12 +1,12 @@
+import getpass
 import os
 import socket
+import subprocess
 import tempfile
 from pathlib import Path
 
 from repo2docker.app import Repo2Docker
 from repo2docker.utils import chdir
-from spython.main import Client
-from spython.utils import get_username, stream_command
 
 from . import __version__
 
@@ -34,14 +34,13 @@ class Repo2Singularity(Repo2Docker):
         Build Singularity Image File (SIF) from built docker image
         """
         docker_uri = f'docker-daemon://{self.output_image_spec}:latest'
-        image, builder = Client.build(docker_uri, image=self.sif_image, stream=True, force=True)
+        cmd = ['singularity', 'build', '--force', self.sif_image, docker_uri]
         self.log.info(
-            '\nBuilding singularity container from the built docker image...\n',
+            f'\nBuilding singularity container from the built docker image...\n{cmd}\n',
             extra=dict(phase='building'),
         )
 
-        for line in builder:
-            print(line, end='')
+        subprocess.check_output(cmd)
 
     def push_image(self):
         """
@@ -59,26 +58,29 @@ class Repo2Singularity(Repo2Docker):
             self.sif_image,
             URI,
         ]
-
-        for line in stream_command(cmd):
-            print(line, end='')
+        self.log.info(
+            f'{cmd}', extra=dict(phase='pushing'),
+        )
+        subprocess.check_output(cmd)
 
     def create_container_sandbox(self):
         """
         Pre-convert the Singularity Image File (SIF) to a directory based format (sandbox)
         """
-        image, builder = Client.build(
-            image=self.sandbox_name,
-            recipe=self.sif_image,
-            build_folder=TMPDIR,
-            sandbox=True,
-            sudo=False,
-            stream=True,
-            force=True,
+
+        self.log.info('Creating sandbox directory\n', extra=dict(phase='launching'))
+        cmd = [
+            'singularity',
+            'build',
+            '--force',
+            '--sandbox',
+            f'{TMPDIR}/{self.sandbox_name}',
+            self.sif_image,
+        ]
+        self.log.info(
+            f'{cmd}\n', extra=dict(phase='building'),
         )
-        self.log.info(f'Creating sandbox directory {image}\n', extra=dict(phase='launching'))
-        for line in builder:
-            print(line, end='')
+        subprocess.check_output(cmd)
 
     def start_container(self):
         """
@@ -93,12 +95,12 @@ class Repo2Singularity(Repo2Docker):
         if not self.run_cmd:
             port = str(self._get_free_port())
             ports = {f'{port}/tcp': port}
-            user = get_username()
+            user = getpass.getuser()
             run_cmd = [
                 'jupyter',
                 'lab',
                 '--ip',
-                '0.0.0.0',
+                self.host_name,
                 '--port',
                 port,
                 f'--NotebookApp.custom_display_url=http://{host_name}:{port}',
@@ -114,16 +116,12 @@ class Repo2Singularity(Repo2Docker):
         self.ports = ports
 
         with chdir(Path(self.container_sandbox_dir).parent):
-            executor = Client.execute(
-                image=self.sandbox_name,
-                writable=True,
-                command=run_cmd,
-                stream=True,
-                quiet=True,
-                options=['--userns'],
+            cmd = ['singularity', 'exec', '--writable', '--userns', self.sandbox_name]
+            cmd += run_cmd
+            self.log.info(
+                f'{cmd}\n', extra=dict(phase='launching'),
             )
-            for line in executor:
-                print(line, end='')
+            subprocess.check_output(cmd)
 
     def run_image(self):
         """Run docker container from built image
@@ -146,15 +144,21 @@ class Repo2Singularity(Repo2Docker):
         elif self.run and self.username_prefix:
             try:
                 URI = f'library://{self.username_prefix}/{self.output_image_spec}'
-                image, puller = Client.pull(
+                cmd = [
+                    'singularity',
+                    'pull',
+                    '--force',
+                    '--allow-unsigned',
+                    '--dir',
+                    REPO2SINGULARITY_CACHEDIR.as_posix(),
+                    '--name',
+                    self.singularity_image_name,
                     URI,
-                    pull_folder=REPO2SINGULARITY_CACHEDIR.as_posix(),
-                    force=True,
-                    stream=True,
-                    singularity_options=['--allow-unsigned'],
+                ]
+                self.log.info(
+                    f'{cmd}\n', extra=dict(phase='pulling'),
                 )
-                for line in puller:
-                    print(line, end='')
+                subprocess.check_output(cmd)
 
                 self.run_image()
             except Exception:
