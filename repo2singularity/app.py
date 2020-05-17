@@ -1,4 +1,5 @@
 import os
+import socket
 import tempfile
 from pathlib import Path
 
@@ -86,7 +87,7 @@ class Repo2Singularity(Repo2Docker):
         Returns running container
         """
 
-        host_name = '127.0.0.1'
+        host_name = socket.gethostname()
 
         self.host_name = host_name
         if not self.run_cmd:
@@ -102,7 +103,7 @@ class Repo2Singularity(Repo2Docker):
                 port,
                 f'--NotebookApp.custom_display_url=http://{host_name}:{port}',
                 '--notebook-dir',
-                f'{self.container_sandbox_dir}/home/{user}',
+                f'/home/{user}',
             ]
         else:
             run_cmd = self.run_cmd
@@ -114,7 +115,12 @@ class Repo2Singularity(Repo2Docker):
 
         with chdir(Path(self.container_sandbox_dir).parent):
             executor = Client.execute(
-                image=self.sandbox_name, writable=True, command=run_cmd, stream=True, quiet=True
+                image=self.sandbox_name,
+                writable=True,
+                command=run_cmd,
+                stream=True,
+                quiet=True,
+                options=['--userns'],
             )
             for line in executor:
                 print(line, end='')
