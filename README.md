@@ -7,13 +7,14 @@
   - [Usage](#usage)
   - [Examples](#examples)
     - [Example 1: Building image for the first time](#example-1-building-image-for-the-first-time)
+      - [Note on setting up an SSH tunnel](#note-on-setting-up-an-ssh-tunnel)
+      - [Note on requirements](#note-on-requirements)
     - [Example 2: Build and Push image to  syslabs.cloud](#example-2-build-and-push-image-to-syslabscloud)
     - [Example 3: Pull a previously uploaded image from syslabs.cloud and run it locally](#example-3-pull-a-previously-uploaded-image-from-syslabscloud-and-run-it-locally)
 
 Wrapper around [repo2docker](https://github.com/jupyter/repo2docker) producing Jupyter enabled Singularity images.
 
 ## Usage
-
 
 ```bash
 $ repo2singularity --help
@@ -79,7 +80,17 @@ $ repo2singularity --run https://github.com/norvig/pytudes
      or http://127.0.0.1:43111/?token=eb5f94c4ffccd7fff5f2f3a4dfc3aa2fc9e361c1a529bd25
 ```
 
-Note: When building an image for the first time, **Docker** and [**Singularity**](https://github.com/hpcng/singularity) need to be running on your machine for this to work .
+#### Note on setting up an SSH tunnel
+
+If you are running Singularity on an HPC system, you may need to set up an SSH tunnel to access the jupyter server. On the local machine, start an SSH tunnel:
+
+```bash
+ssh -N -L local-address:local-port:remote-address:remote-port remote-user@remote-host
+```
+
+#### Note on requirements
+
+When building an image for the first time, **Docker** and [**Singularity**](https://github.com/hpcng/singularity) need to be running on your machine for this to work .
 If a singularity image already exists on [syslabs.cloud](https://cloud.sylabs.io/), you only need **singularity**.
 
 ### Example 2: Build and Push image to  [syslabs.cloud](https://cloud.sylabs.io/library)
