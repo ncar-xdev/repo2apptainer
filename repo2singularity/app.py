@@ -116,7 +116,12 @@ class Repo2Singularity(Repo2Docker):
         self.ports = ports
 
         with chdir(Path(self.container_sandbox_dir).parent):
-            cmd = ['singularity', 'exec', '--writable', '--userns', self.sandbox_name]
+            cmd = ['singularity', 'exec', '--writable', '--userns']
+            if self.bind:
+                cmd.extend(['--bind', self.bind])
+
+            cmd.append(self.sandbox_name)
+
             cmd += run_cmd
             self.log.info(
                 f'{cmd}\n', extra=dict(phase='launching'),
@@ -124,7 +129,8 @@ class Repo2Singularity(Repo2Docker):
             subprocess.check_output(cmd)
 
     def run_image(self):
-        """Run docker container from built image
+        """
+        Run docker container from built image
         """
 
         self.create_container_sandbox()

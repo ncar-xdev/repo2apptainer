@@ -126,6 +126,16 @@ def cli(
     run: bool = typer.Option(
         False, show_default=True, help='Run container after it has been built.'
     ),
+    bind: str = typer.Option(
+        '',
+        show_default=True,
+        help=(
+            'Volumes to mount inside the container, in form '
+            'src[:dest[:opts]], where src and dest are outside and inside paths.  If dest '
+            "is not given, it is set equal to src. Mount options ('opts') may be specified as "
+            "'ro' (read-only) or 'rw' (read/write, which is the default)"
+        ),
+    ),
     json_logs: bool = typer.Option(
         False, show_default=True, help='Emit JSON logs instead of human readable logs.'
     ),
@@ -152,6 +162,7 @@ def cli(
 
     r2s.json_logs = json_logs
     r2s.run = run
+    r2s.bind = bind
     if debug:
         r2s.log_level = logging.DEBUG
 
