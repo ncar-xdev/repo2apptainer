@@ -90,8 +90,7 @@ ssh -N -L local-address:local-port:remote-address:remote-port remote-user@remote
 
 #### Note on requirements
 
-When building an image for the first time, **Docker** and [**Singularity**](https://github.com/hpcng/singularity) need to be running on your machine for this to work .
-If a singularity image already exists on [syslabs.cloud](https://cloud.sylabs.io/), you only need **singularity**.
+When building an image for the first time, **Docker** and [**Singularity**](https://github.com/hpcng/singularity) need to be running on your machine for this to work.
 
 ### Example 2: Build and Push image to  [syslabs.cloud](https://cloud.sylabs.io/library)
 
@@ -104,3 +103,5 @@ repo2singularity --push --username-prefix andersy005/test https://github.com/nor
 ```bash
 repo2singularity --pull --username-prefix andersy005/test --run  https://github.com/norvig/pytudes
 ```
+
+Note: Pulling an existing singularity image from [syslabs.cloud](https://cloud.sylabs.io/) requires having **singularity** installed.
