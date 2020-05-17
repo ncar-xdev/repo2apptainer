@@ -33,6 +33,14 @@ Options:
   --run / --no-run              Run container after it has been built.
                                 [default: False]
 
+  --bind TEXT                   Volumes to mount inside the container, in form
+                                src[:dest[:opts]], where src and dest are
+                                outside and inside paths.  If dest is not
+                                given, it is set equal to src. Mount options
+                                ('opts') may be specified as 'ro' (read-only)
+                                or 'rw' (read/write, which is the default)
+                                [default: ]
+
   --json-logs / --no-json-logs  Emit JSON logs instead of human readable logs.
                                 [default: False]
 
