@@ -3,9 +3,17 @@
 
 # Repo2singularity
 
+- [Repo2singularity](#repo2singularity)
+  - [Usage](#usage)
+  - [Examples](#examples)
+    - [Example 1: Building image for the first time](#example-1-building-image-for-the-first-time)
+    - [Example 2: Build and Push image to  syslabs.cloud](#example-2-build-and-push-image-to-syslabscloud)
+    - [Example 3: Pull a previously uploaded image from syslabs.cloud and run it locally](#example-3-pull-a-previously-uploaded-image-from-syslabscloud-and-run-it-locally)
+
 Wrapper around [repo2docker](https://github.com/jupyter/repo2docker) producing Jupyter enabled Singularity images.
 
 ## Usage
+
 
 ```bash
 $ repo2singularity --help
@@ -51,4 +59,37 @@ Options:
                                 it or customize the installation.
 
   --help                        Show this message and exit.
+```
+
+## Examples
+
+### Example 1: Building image for the first time
+
+```bash
+$ repo2singularity --run https://github.com/norvig/pytudes
+
+[I 21:19:17.090 LabApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[W 21:19:17.102 LabApp] No web browser found: could not locate runnable browser.
+[C 21:19:17.102 LabApp]
+
+    To access the notebook, open this file in a browser:
+        file:///home/USERNAME/.local/share/jupyter/runtime/nbserver-17263-open.html
+    Or copy and paste one of these URLs:
+        http://HOSTNAME:43111/?token=eb5f94c4ffccd7fff5f2f3a4dfc3aa2fc9e361c1a529bd25
+     or http://127.0.0.1:43111/?token=eb5f94c4ffccd7fff5f2f3a4dfc3aa2fc9e361c1a529bd25
+```
+
+Note: When building an image for the first time, **Docker** and [**Singularity**](https://github.com/hpcng/singularity) need to be running on your machine for this to work .
+If a singularity image already exists on [syslabs.cloud](https://cloud.sylabs.io/), you only need **singularity**.
+
+### Example 2: Build and Push image to  [syslabs.cloud](https://cloud.sylabs.io/library)
+
+```bash
+repo2singularity --push --username-prefix andersy005/test https://github.com/norvig/pytudes
+```
+
+### Example 3: Pull a previously uploaded image from [syslabs.cloud](https://cloud.sylabs.io/library) and run it locally
+
+```bash
+repo2singularity --pull --username-prefix andersy005/test --run  https://github.com/norvig/pytudes
 ```
