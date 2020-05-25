@@ -33,5 +33,9 @@ async def repo(repo: Repo):
     if os.path.exists(image_path):
         return FileResponse(image_path)
     else:
-        subprocess.check_call(command)
+        await build_image(command)
         return FileResponse(image_path)
+
+
+async def build_image(command):
+    subprocess.check_call(command)
