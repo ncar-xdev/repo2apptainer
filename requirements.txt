@@ -1,5 +1,5 @@
 fastapi
-fastprogress
 jupyter-repo2docker
 requests
+tqdm
 typer
