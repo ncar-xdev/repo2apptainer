@@ -3,23 +3,15 @@ import json
 import os
 import socket
 import subprocess
-import tempfile
 from pathlib import Path
 
 import requests
 from repo2docker.app import Repo2Docker
 from repo2docker.utils import chdir
+from tqdm import tqdm
 
 from . import __version__
-
-SINGULARITY_CACHEDIR = os.environ.get('SINGULARITY_CACHEDIR', '~/.singularity/cache')
-CACHEDIR_PATH = Path(SINGULARITY_CACHEDIR).expanduser()
-if not CACHEDIR_PATH.exists():
-    CACHEDIR_PATH.mkdir(exist_ok=True, parents=True)
-
-REPO2SINGULARITY_CACHEDIR = CACHEDIR_PATH / 'repo2singularity'
-REPO2SINGULARITY_CACHEDIR.mkdir(exist_ok=True, parents=True)
-TMPDIR = tempfile.gettempdir()
+from .cache import REPO2SINGULARITY_CACHEDIR, TMPDIR
 
 
 class Repo2Singularity(Repo2Docker):
@@ -35,13 +27,18 @@ class Repo2Singularity(Repo2Docker):
         """
         Build Singularity Image File (SIF) from built docker image
         """
+        if os.path.exists(self.sif_image) and not self.force:
+            return
         docker_uri = f'docker-daemon://{self.output_image_spec}:latest'
-        cmd = ['singularity', 'build', '--force', self.sif_image, docker_uri]
+        cmd = ['singularity', 'build']
+        if self.force:
+            cmd.append('--force')
+
+        cmd.extend([self.sif_image, docker_uri])
         self.log.info(
             f'\nBuilding singularity container from the built docker image...\n{cmd}\n',
             extra=dict(phase='building'),
         )
-
         subprocess.check_output(cmd)
 
     def push_image(self):
@@ -155,14 +152,16 @@ class Repo2Singularity(Repo2Docker):
                 cmd = [
                     'singularity',
                     'pull',
-                    '--force',
                     '--allow-unsigned',
                     '--dir',
                     REPO2SINGULARITY_CACHEDIR.as_posix(),
                     '--name',
                     self.singularity_image_name,
-                    URI,
                 ]
+
+                if self.force:
+                    cmd.append('--force')
+                cmd.append(URI)
                 self.log.info(
                     f'{cmd}\n', extra=dict(phase='pulling'),
                 )
@@ -173,14 +172,12 @@ class Repo2Singularity(Repo2Docker):
                 pass
 
         if self.remote:
-            with requests.Session() as session:
-                if self.ref is None:
-                    ref = 'master'
-                else:
-                    ref = self.ref
-                data = {'url': self.repo, 'ref': ref, 'image_name': self.output_image_spec}
-                response = session.post('http://10.0.0.50:8000/repo', data=json.dumps(data)).json()
-                print(response)
+            if self.ref is None:
+                ref = 'master'
+            else:
+                ref = self.ref
+            data = {'url': self.repo, 'ref': ref, 'image_name': self.output_image_spec}
+            downloader(data, self.sif_image)
 
         else:
             self.build()
@@ -190,3 +187,29 @@ class Repo2Singularity(Repo2Docker):
             self.push_image()
         if self.run:
             self.run_image()
+
+
+def downloader(
+    data: dict,
+    output_file: str,
+    chunk_size: int = 2048,
+    endpoint_url: str = 'http://10.0.0.50:8000/repo',
+):
+
+    with requests.Session() as session:
+        response = session.post(endpoint_url, data=json.dumps(data))
+        response.raise_for_status()
+        content = response.iter_content(chunk_size=chunk_size)
+        total = int(response.headers.get('content-length', 0))
+        progressbar = tqdm(
+            total=total, ncols=82, unit='B', unit_scale=True, leave=True, desc='Downloading image'
+        )
+        with open(output_file, 'w+b') as fout:
+            for chunk in content:
+                if chunk:
+                    fout.write(chunk)
+                    fout.flush()
+                    progressbar.update(chunk_size)
+        progressbar.reset()
+        progressbar.update(total)
+        progressbar.close()

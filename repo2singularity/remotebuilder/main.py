@@ -1,7 +1,11 @@
+import os
 import subprocess
 
 from fastapi import FastAPI
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
+
+from repo2singularity.cache import REPO2SINGULARITY_CACHEDIR
 
 
 class Repo(BaseModel):
@@ -24,5 +28,10 @@ async def repo(repo: Repo):
     if repo.ref:
         command.extend(['--ref', repo.ref])
     command.append(repo.url)
-    subprocess.check_call(command)
-    return command
+
+    image_path = f'{REPO2SINGULARITY_CACHEDIR}/{repo.image_name}.sif'
+    if os.path.exists(image_path):
+        return FileResponse(image_path)
+    else:
+        subprocess.check_call(command)
+        return FileResponse(image_path)

@@ -140,7 +140,10 @@ def cli(
         False, show_default=True, help='Emit JSON logs instead of human readable logs.'
     ),
     debug: bool = typer.Option(False, show_default=True, help='Turn on debug logging.'),
-    remote: bool = typer.Option(False, show_default=True, help='build image remotely'),
+    remote: bool = typer.Option(False, show_default=True, help='Build image remotely'),
+    force: bool = typer.Option(
+        False, show_default=True, help='Force the build if the image/sandbox directory exits.'
+    ),
     version: bool = typer.Option(
         None,
         '--version',
@@ -170,6 +173,7 @@ def cli(
     if push and not username_prefix:
         raise ValueError('Missing `user/prefix component for the image URI.')
     r2s.push = push
+    r2s.force = force
     r2s.remote = remote
     r2s.username_prefix = username_prefix
     r2s.initialize()

@@ -1,2 +1,5 @@
+fastapi
+fastprogress
 jupyter-repo2docker
+requests
 typer
