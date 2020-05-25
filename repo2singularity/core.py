@@ -140,9 +140,14 @@ def cli(
         False, show_default=True, help='Emit JSON logs instead of human readable logs.'
     ),
     debug: bool = typer.Option(False, show_default=True, help='Turn on debug logging.'),
-    remote: bool = typer.Option(False, show_default=True, help='Build image remotely'),
+    remote: bool = typer.Option(False, show_default=True, help='Build image remotely.'),
     force: bool = typer.Option(
         False, show_default=True, help='Force the build if the image/sandbox directory exits.'
+    ),
+    endpoint_url: str = typer.Option(
+        '',
+        show_default=True,
+        help='Endpoint URL of the remote builder. Used in conjuction with --remote.',
     ),
     version: bool = typer.Option(
         None,
@@ -174,7 +179,10 @@ def cli(
         raise ValueError('Missing `user/prefix component for the image URI.')
     r2s.push = push
     r2s.force = force
+    if remote and not endpoint_url:
+        raise ValueError('endpoint_url is required.')
     r2s.remote = remote
+    r2s.endpoint_url = endpoint_url
     r2s.username_prefix = username_prefix
     r2s.initialize()
     r2s.start()

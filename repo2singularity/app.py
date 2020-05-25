@@ -177,7 +177,7 @@ class Repo2Singularity(Repo2Docker):
             else:
                 ref = self.ref
             data = {'url': self.repo, 'ref': ref, 'image_name': self.output_image_spec}
-            downloader(data, self.sif_image)
+            downloader(data, self.sif_image, self.endpoint_url)
 
         else:
             self.build()
@@ -190,10 +190,7 @@ class Repo2Singularity(Repo2Docker):
 
 
 def downloader(
-    data: dict,
-    output_file: str,
-    chunk_size: int = 2048,
-    endpoint_url: str = 'http://10.0.0.50:8000/repo',
+    data: dict, output_file: str, endpoint_url: str, chunk_size: int = 2048,
 ):
 
     with requests.Session() as session:
