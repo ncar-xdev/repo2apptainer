@@ -1,4 +1,14 @@
-from fastapi import FastAPI, HTTPException
+import subprocess
+
+from fastapi import FastAPI
+from pydantic import BaseModel
+
+
+class Repo(BaseModel):
+    url: str
+    ref: str = None
+    image_name: str
+
 
 app = FastAPI()
 
@@ -8,15 +18,11 @@ async def read_root():
     return 'Hello, World! Repo2singularity Remote Builder here.'
 
 
-@app.post('/repos/{provider}/{org}/{repo}/{ref}')
-async def repo(provider: str, org: str, repo: str, ref: str = None):
-    providers = {'github': 'https://github.com', 'gh': 'https://github.com'}
-    try:
-        url = f'{providers[provider]}/{org}/{repo}'
-    except KeyError:
-        raise HTTPException(
-            status_code=500,
-            detail=f'Provider {provider} not found in list of valid providers {list(providers.keys())}',
-        )
-
-    return {'url': url}
+@app.post('/repo/')
+async def repo(repo: Repo):
+    command = ['repo2singularity', '--image-name', repo.image_name]
+    if repo.ref:
+        command.extend(['--ref', repo.ref])
+    command.append(repo.url)
+    subprocess.check_call(command)
+    return command

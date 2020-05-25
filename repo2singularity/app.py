@@ -1,10 +1,12 @@
 import getpass
+import json
 import os
 import socket
 import subprocess
 import tempfile
 from pathlib import Path
 
+import requests
 from repo2docker.app import Repo2Docker
 from repo2docker.utils import chdir
 
@@ -170,8 +172,19 @@ class Repo2Singularity(Repo2Docker):
             except Exception:
                 pass
 
-        self.build()
-        self.build_sif()
+        if self.remote:
+            with requests.Session() as session:
+                if self.ref is None:
+                    ref = 'master'
+                else:
+                    ref = self.ref
+                data = {'url': self.repo, 'ref': ref, 'image_name': self.output_image_spec}
+                response = session.post('http://10.0.0.50:8000/repo', data=json.dumps(data)).json()
+                print(response)
+
+        else:
+            self.build()
+            self.build_sif()
 
         if self.push:
             self.push_image()
