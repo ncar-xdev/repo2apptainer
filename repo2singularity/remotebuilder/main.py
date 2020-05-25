@@ -28,13 +28,12 @@ async def repo(repo: Repo):
     if repo.ref:
         command.extend(['--ref', repo.ref])
     command.append(repo.url)
-
     image_path = f'{REPO2SINGULARITY_CACHEDIR}/{repo.image_name}.sif'
     if os.path.exists(image_path):
-        return FileResponse(image_path)
+        return FileResponse(image_path, media_type='application/octet-stream')
     else:
         await build_image(command)
-        return FileResponse(image_path)
+        return FileResponse(image_path, media_type='application/octet-stream')
 
 
 async def build_image(command):
