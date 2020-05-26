@@ -66,7 +66,7 @@ class Repo2Singularity(Repo2Docker):
         Pre-convert the Singularity Image File (SIF) to a directory based format (sandbox)
         """
 
-        if (TMPDIR / self.sandbox_name).exists() and not self.force:
+        if (Path(TMPDIR) / self.sandbox_name).exists() and not self.force:
             self.log.info('Using existing sandbox directory\n', extra=dict(phase='launching'))
             return
 
