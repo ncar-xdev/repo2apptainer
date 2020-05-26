@@ -1,4 +1,3 @@
-import getpass
 import json
 import os
 import socket
@@ -94,7 +93,6 @@ class Repo2Singularity(Repo2Docker):
         if not self.run_cmd:
             port = str(self._get_free_port())
             ports = {f'{port}/tcp': port}
-            user = getpass.getuser()
             run_cmd = [
                 'jupyter',
                 'lab',
@@ -104,7 +102,7 @@ class Repo2Singularity(Repo2Docker):
                 port,
                 f'--NotebookApp.custom_display_url=http://{host_name}:{port}',
                 '--notebook-dir',
-                f'/home/{user}',
+                '/opt/notebooks',
             ]
         else:
             run_cmd = self.run_cmd

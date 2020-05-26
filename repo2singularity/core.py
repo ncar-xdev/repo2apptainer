@@ -184,6 +184,10 @@ def cli(
     r2s.remote = remote
     r2s.endpoint_url = endpoint_url
     r2s.username_prefix = username_prefix
+    # Hard code the path inside the image where contents of the
+    # repositories are copied to. For more details,
+    # see https://github.com/binder-examples/continuous-build/issues/6
+    r2s.target_repo_dir = '/opt/notebooks'
     r2s.initialize()
     r2s.start()
 
