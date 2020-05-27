@@ -22,7 +22,7 @@ async def read_root():
     return 'Hello, World! Repo2singularity Remote Builder here.'
 
 
-@app.post('/repo/')
+@app.post('/api/')
 async def repo(repo: Repo):
     command = ['repo2singularity', '--image-name', repo.image_name]
     if repo.ref:
