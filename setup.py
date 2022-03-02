@@ -24,6 +24,7 @@ setup(
     name='repo2singularity',
     description='Repo2singularity: Wrapper around repo2docker producing producing Jupyter enabled Singularity images.',
     long_description=LONG_DESCRIPTION,
+    long_description_content_type='text/markdown',
     python_requires='>=3.6',
     maintainer='Anderson Banihirwe',
     classifiers=CLASSIFIERS,
@@ -36,5 +37,4 @@ setup(
     entry_points={'console_scripts': ['repo2singularity = repo2singularity.core:main']},
     keywords='reproducible science environments docker singularity',
     use_scm_version={'version_scheme': 'post-release', 'local_scheme': 'dirty-tag'},
-    setup_requires=['setuptools_scm', 'setuptools>=30.3.0'],
 )
