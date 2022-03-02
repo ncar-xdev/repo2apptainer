@@ -1,0 +1,3 @@
+singularity_in_docker:
+  image: kaczmarj/singularity
+  tag: 3.8.6

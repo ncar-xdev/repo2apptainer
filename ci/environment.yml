@@ -3,9 +3,10 @@ channels:
   - conda-forge
   - nodefaults
 dependencies:
-  - typer
-  - rich
-  - pydantic
-  - jupyter-repo2docker
   - black
+  - donfig
+  - jupyter-repo2docker
   - pre-commit
+  - pydantic
+  - rich
+  - typer
