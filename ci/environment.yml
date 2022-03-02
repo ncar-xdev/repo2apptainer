@@ -1,0 +1,11 @@
+name: repo2singularity-dev
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - typer
+  - rich
+  - pydantic
+  - jupyter-repo2docker
+  - black
+  - pre-commit
