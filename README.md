@@ -1,16 +1,12 @@
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/andersy005/repo2singularity/CI?logo=github&style=for-the-badge)
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/andersy005/repo2singularity/code-style?label=code%20style&logo=github&style=for-the-badge)
-
 # Repo2singularity
 
-- [Repo2singularity](#repo2singularity)
-  - [Usage](#usage)
-  - [Examples](#examples)
-    - [Example 1: Building image for the first time](#example-1-building-image-for-the-first-time)
-      - [Note on setting up an SSH tunnel](#note-on-setting-up-an-ssh-tunnel)
-      - [Note on requirements](#note-on-requirements)
-    - [Example 2: Build and Push image to syslabs.cloud](#example-2-build-and-push-image-to-syslabscloud)
-    - [Example 3: Pull a previously uploaded image from syslabs.cloud and run it locally](#example-3-pull-a-previously-uploaded-image-from-syslabscloud-and-run-it-locally)
+_✨ This code is highly experimental! Let the buyer beware ⚠️ ;) ✨_
+
+| CI          | [![GitHub Workflow Status][github-ci-badge]][github-ci-link] [![Code Coverage Status][codecov-badge]][codecov-link] [![pre-commit.ci status][pre-commit.ci-badge]][pre-commit.ci-link] |
+| :---------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+| **Docs**    |                                                                     [![Documentation Status][rtd-badge]][rtd-link]                                                                     |
+| **Package** |                                                          [![Conda][conda-badge]][conda-link] [![PyPI][pypi-badge]][pypi-link]                                                          |
+| **License** |                                                                         [![License][license-badge]][repo-link]                                                                         |
 
 Wrapper around [repo2docker](https://github.com/jupyter/repo2docker) producing Jupyter enabled Singularity images.
 
@@ -118,3 +114,18 @@ repo2singularity --pull --username-prefix andersy005/test --run  https://github.
 ```
 
 Note: Pulling an existing singularity image from [syslabs.cloud](https://cloud.sylabs.io/) requires having **singularity** installed.
+
+[github-ci-badge]: https://img.shields.io/github/workflow/status/andersy005/repo2singularity/CI?label=CI&logo=github
+[github-ci-link]: https://github.com/andersy005/repo2singularity/actions?query=workflow%3ACI
+[codecov-badge]: https://img.shields.io/codecov/c/github/andersy005/repo2singularity.svg?logo=codecov
+[codecov-link]: https://codecov.io/gh/andersy005/repo2singularity
+[rtd-badge]: https://img.shields.io/readthedocs/repo2singularity/latest.svg
+[rtd-link]: https://repo2singularity.readthedocs.io/en/latest/?badge=latest
+[pypi-badge]: https://img.shields.io/pypi/v/repo2singularity?logo=pypi
+[pypi-link]: https://pypi.org/project/repo2singularity
+[conda-badge]: https://img.shields.io/conda/vn/conda-forge/repo2singularity?logo=anaconda
+[conda-link]: https://anaconda.org/conda-forge/repo2singularity
+[license-badge]: https://img.shields.io/github/license/andersy005/repo2singularity
+[repo-link]: https://github.com/andersy005/repo2singularity
+[pre-commit.ci-badge]: https://results.pre-commit.ci/badge/github/andersy005/repo2singularity/main.svg
+[pre-commit.ci-link]: https://results.pre-commit.ci/latest/github/andersy005/repo2singularity/main
