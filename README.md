@@ -9,7 +9,7 @@
     - [Example 1: Building image for the first time](#example-1-building-image-for-the-first-time)
       - [Note on setting up an SSH tunnel](#note-on-setting-up-an-ssh-tunnel)
       - [Note on requirements](#note-on-requirements)
-    - [Example 2: Build and Push image to  syslabs.cloud](#example-2-build-and-push-image-to-syslabscloud)
+    - [Example 2: Build and Push image to syslabs.cloud](#example-2-build-and-push-image-to-syslabscloud)
     - [Example 3: Pull a previously uploaded image from syslabs.cloud and run it locally](#example-3-pull-a-previously-uploaded-image-from-syslabscloud-and-run-it-locally)
 
 Wrapper around [repo2docker](https://github.com/jupyter/repo2docker) producing Jupyter enabled Singularity images.
@@ -105,7 +105,7 @@ ssh -N -L 43111:node2:43111 homersimpson@node2.springfield.io
 
 When building an image for the first time, **Docker** and [**Singularity**](https://github.com/hpcng/singularity) need to be running on your machine for this to work.
 
-### Example 2: Build and Push image to  [syslabs.cloud](https://cloud.sylabs.io/library)
+### Example 2: Build and Push image to [syslabs.cloud](https://cloud.sylabs.io/library)
 
 ```bash
 repo2singularity --push --username-prefix andersy005/test https://github.com/norvig/pytudes

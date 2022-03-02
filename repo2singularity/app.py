@@ -47,7 +47,8 @@ class Repo2Singularity(Repo2Docker):
         URI = f'library://{self.username_prefix}/{self.output_image_spec}:latest'
 
         self.log.info(
-            f'Pushing image to {URI}\n', extra=dict(phase='pushing'),
+            f'Pushing image to {URI}\n',
+            extra=dict(phase='pushing'),
         )
         cmd = [
             'singularity',
@@ -57,7 +58,8 @@ class Repo2Singularity(Repo2Docker):
             URI,
         ]
         self.log.info(
-            f'{cmd}', extra=dict(phase='pushing'),
+            f'{cmd}',
+            extra=dict(phase='pushing'),
         )
         subprocess.check_output(cmd)
 
@@ -77,7 +79,8 @@ class Repo2Singularity(Repo2Docker):
         cmd.extend(['--sandbox', f'{TMPDIR}/{self.sandbox_name}', self.sif_image])
 
         self.log.info(
-            f'{cmd}\n', extra=dict(phase='building'),
+            f'{cmd}\n',
+            extra=dict(phase='building'),
         )
         subprocess.check_output(cmd)
 
@@ -122,7 +125,8 @@ class Repo2Singularity(Repo2Docker):
 
             cmd += run_cmd
             self.log.info(
-                f'{cmd}\n', extra=dict(phase='launching'),
+                f'{cmd}\n',
+                extra=dict(phase='launching'),
             )
             subprocess.check_output(cmd)
 
@@ -162,7 +166,8 @@ class Repo2Singularity(Repo2Docker):
                     cmd.append('--force')
                 cmd.append(URI)
                 self.log.info(
-                    f'{cmd}\n', extra=dict(phase='pulling'),
+                    f'{cmd}\n',
+                    extra=dict(phase='pulling'),
                 )
                 subprocess.check_output(cmd)
 
@@ -189,7 +194,10 @@ class Repo2Singularity(Repo2Docker):
 
 
 def downloader(
-    data: dict, output_file: str, endpoint_url: str, chunk_size: int = 2048,
+    data: dict,
+    output_file: str,
+    endpoint_url: str,
+    chunk_size: int = 2048,
 ):
 
     with requests.Session() as session:
