@@ -16,7 +16,6 @@ concurrency:
 
 jobs:
   build:
-    name: build
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -24,7 +23,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.8", "3.9", "3.10"]
+        python-version: ["3.9"]
+        repo-type:
+          - conda
+          - dockerfile
     steps:
       - uses: actions/checkout@v2
       - name: Create conda environment
@@ -43,4 +45,5 @@ jobs:
 
       - name: Run tests
         run: |
-          repo2apptainer build ../repo2apptainer
+          cd tests
+          repo2apptainer build ${{ matrix.repo-type }}
