@@ -1,3 +1,9 @@
 singularity_in_docker:
   image: kaczmarj/singularity
   tag: 3.8.6
+
+base_image:
+  image: pangeo/base-image
+  tag: 2022.02.04
+
+cache_dir: null

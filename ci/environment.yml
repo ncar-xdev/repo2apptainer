@@ -10,3 +10,5 @@ dependencies:
   - pydantic
   - rich
   - typer
+  - spython
+  - go

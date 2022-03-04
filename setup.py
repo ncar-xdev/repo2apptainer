@@ -40,7 +40,12 @@ setup(
     install_requires=INSTALL_REQUIRES,
     license='BSD-3-Clause',
     zip_safe=False,
-    entry_points={'console_scripts': []},
+    entry_points={
+        'console_scripts': [
+            'repo2singularity = repo2singularity.cli:main',
+            'r2s = repo2singularity.cli:main',
+        ]
+    },
     keywords='reproducible science environments docker singularity',
     use_scm_version={'version_scheme': 'post-release', 'local_scheme': 'dirty-tag'},
 )
