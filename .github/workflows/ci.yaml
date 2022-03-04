@@ -16,7 +16,6 @@ concurrency:
 
 jobs:
   build:
-    name: build
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -24,6 +23,28 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.7", "3.8", "3.9"]
+        python-version: ["3.9"]
+        repo-type:
+          - conda
+          - dockerfile
     steps:
       - uses: actions/checkout@v2
+      - name: Create conda environment
+        uses: mamba-org/provision-with-micromamba@main
+        with:
+          cache-downloads: true
+          micromamba-version: "latest"
+          environment-file: ci/environment.yml
+          extra-specs: |
+            python=${{ matrix.python-version }}
+
+      - name: Install repo2apptainer
+        run: |
+          python -m pip install -e . --no-deps --force-reinstall
+          conda list
+
+      - name: Run tests
+        run: |
+          cd tests
+          repo2apptainer build ${{ matrix.repo-type }}
+          docker run --privileged --rm -v ~/.singularity/cache/:/work kaczmarj/apptainer:1.0.0 exec r2s-${{ matrix.repo-type }}-main.sif conda --version

@@ -1,0 +1,8 @@
+apptainer_in_docker:
+  image: kaczmarj/apptainer
+  tag: 1.0.0
+base_image:
+  image: pangeo/base-image
+  tag: 2022.02.04
+
+cache_dir: null

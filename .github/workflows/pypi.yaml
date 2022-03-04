@@ -8,7 +8,7 @@ on:
 jobs:
   build-artifacts:
     runs-on: ubuntu-latest
-    if: github.repository == 'andersy005/repo2singularity'
+    if: github.repository == 'andersy005/repo2apptainer'
     steps:
       - uses: actions/checkout@v2
         with:
@@ -33,7 +33,7 @@ jobs:
         run: |
           python -m twine check dist/*
           pwd
-          if [ -f dist/repo2singularity-0.0.0.tar.gz ]; then
+          if [ -f dist/repo2apptainer-0.0.0.tar.gz ]; then
             echo "❌ INVALID VERSION NUMBER"
             exit 1
           else
@@ -65,8 +65,8 @@ jobs:
         if: github.event_name == 'push'
         run: |
           python -m pip install --upgrade pip
-          python -m pip install dist/repo2singularity*.whl
-          python -c "import repo2singularity; print(repo2singularity.__version__)"
+          python -m pip install dist/repo2apptainer*.whl
+          python -c "import repo2apptainer; print(repo2apptainer.__version__)"
 
   upload-to-pypi:
     needs: test-built-dist

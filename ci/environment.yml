@@ -1,0 +1,14 @@
+name: repo2apptainer-dev
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - black
+  - donfig
+  - jupyter-repo2docker
+  - pre-commit
+  - pydantic
+  - rich
+  - typer
+  - spython
+  - go
