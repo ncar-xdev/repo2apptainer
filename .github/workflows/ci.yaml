@@ -30,7 +30,6 @@ jobs:
       - name: Create conda environment
         uses: mamba-org/provision-with-micromamba@main
         with:
-          cache-env: true
           micromamba-version: "latest"
           environment-file: ci/environment.yml
           extra-specs: |
