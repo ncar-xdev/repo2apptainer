@@ -47,4 +47,4 @@ jobs:
         run: |
           cd tests
           repo2apptainer build ${{ matrix.repo-type }}
-          docker run --privileged --rm -v ~/.singularity/cache/:/work kaczmarj/apptainer:1.0.0 exec r2s-tests-2f${{ matrix.repo-type }}-main.sif conda --version
+          docker run --privileged --rm -v ~/.singularity/cache/:/work kaczmarj/apptainer:1.0.0 exec r2s-${{ matrix.repo-type }}-main.sif conda --version
