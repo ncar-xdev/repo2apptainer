@@ -21,19 +21,19 @@ CLASSIFIERS = [
 ]
 
 setup(
-    name='repo2singularity',
-    description='Repo2singularity: Wrapper around repo2docker producing producing Jupyter enabled Singularity images.',
+    name='repo2apptainer',
+    description='Repo2apptainer: Wrapper around repo2docker producing producing Jupyter enabled Apptainer/Singularity images.',
     long_description=LONG_DESCRIPTION,
     long_description_content_type='text/markdown',
     python_requires='>=3.8',
     maintainer='Anderson Banihirwe',
     classifiers=CLASSIFIERS,
-    url='https://repo2singularity.readthedocs.io',
+    url='https://repo2apptainer.readthedocs.io',
     project_urls={
-        'Documentation': 'https://repo2singularity.readthedocs.io',
-        'Source': 'https://github.com/andersy005/repo2singularity',
-        'Tracker': 'https://github.com/andersy005/repo2singularity/issues',
-        'Discussions/Support': 'https://github.com/andersy005/repo2singularity/discussions',
+        'Documentation': 'https://repo2apptainer.readthedocs.io',
+        'Source': 'https://github.com/andersy005/repo2apptainer',
+        'Tracker': 'https://github.com/andersy005/repo2apptainer/issues',
+        'Discussions/Support': 'https://github.com/andersy005/repo2apptainer/discussions',
     },
     packages=find_packages(exclude=('tests',)),
     include_package_data=True,
@@ -42,10 +42,12 @@ setup(
     zip_safe=False,
     entry_points={
         'console_scripts': [
-            'repo2singularity = repo2singularity.cli:main',
-            'r2s = repo2singularity.cli:main',
+            'repo2apptainer=repo2apptainer.cli:main',
+            'r2a=repo2apptainer.cli:main',
+            'repo2singularity = repo2apptainer.cli:main',
+            'r2s = repo2apptainer.cli:main',
         ]
     },
-    keywords='reproducible science environments docker singularity',
+    keywords='reproducible science environments docker singularity apptainer jupyter',
     use_scm_version={'version_scheme': 'post-release', 'local_scheme': 'dirty-tag'},
 )

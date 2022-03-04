@@ -1,4 +1,4 @@
-name: repo2singularity-dev
+name: repo2apptainer-dev
 channels:
   - conda-forge
   - nodefaults
