@@ -14,23 +14,25 @@ def version_callback(value: bool):
 
 
 @app.command()
-def build(repo: str, ref: str = 'main', rebuild: bool = False):
+def build(repo: str, ref: str = 'main', force: bool = False):
     """Build a Singularity image from a repository"""
-    console.log('Building a Singularity image from a repository')
-    r2s = Repo2Singularity(repo=repo, ref=ref, rebuild=rebuild)
-    console.log(f'Repository: {r2s.r2d.repo}')
-    console.log(f'Reference: {r2s.r2d.ref}')
-    console.log(f'Output image: {r2s.r2d.output_image_spec}')
-    console.log(f'SIF image: {r2s.sif_image}')
-    console.log(f'Cache directory: {r2s.cache_dir}')
+    console.print('Building a Singularity image from a repository')
+    r2s = Repo2Singularity(repo=repo, ref=ref, force=force)
+    console.print(f'Repository: {r2s.r2d.repo}')
+    console.print(f'Reference: {r2s.r2d.ref}')
+    console.print(f'Output image: {r2s.r2d.output_image_spec}')
+    console.print(f'Cache directory: {r2s.cache_dir}')
     with console.status('Building docker image'):
-        r2s.build()
+        r2s.build_docker()
+    with console.status('Building SIF image'):
+        r2s.build_sif()
+    console.print(f'SIF image: {r2s.sif_image}')
 
 
 @app.command()
 def run():
     """Run a Singularity image"""
-    console.log('Running a Singularity image')
+    console.print('Running a Singularity image')
 
 
 @app.command()
