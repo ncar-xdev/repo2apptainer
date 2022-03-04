@@ -8,7 +8,7 @@ from repo2docker.app import Repo2Docker
 
 from .config import config as _config
 from .console import console
-from .helpers import generate_image_name, resolve_ref
+from .helpers import generate_image_name
 
 
 @pydantic.dataclasses.dataclass
@@ -26,7 +26,7 @@ class Repo2Apptainer:
         self.cache_dir.mkdir(parents=True, exist_ok=True)
         self.r2d = Repo2Docker()
         self.r2d.repo = self.repo
-        self.r2d.ref = resolve_ref(self.repo, self.ref)
+        self.r2d.ref = self.ref
         self.r2d.output_image_spec = generate_image_name(self.repo, self.r2d.ref)
         self.sif_image = self.cache_dir / f'{self.r2d.output_image_spec}.sif'
         self.apptainer_image = (
