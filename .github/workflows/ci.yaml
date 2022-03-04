@@ -34,7 +34,7 @@ jobs:
           micromamba-version: "latest"
           environment-file: ci/environment.yml
           extra-specs: |
-            - python=${{ matrix.python-version }}
+            python=${{ matrix.python-version }}
 
       - name: Install repo2apptainer
         run: |
