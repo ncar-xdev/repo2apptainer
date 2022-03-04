@@ -30,6 +30,7 @@ jobs:
       - name: Create conda environment
         uses: mamba-org/provision-with-micromamba@main
         with:
+          cache-downloads: true
           micromamba-version: "latest"
           environment-file: ci/environment.yml
           extra-specs: |
@@ -42,4 +43,4 @@ jobs:
 
       - name: Run tests
         run: |
-          repo2apptainer --help
+          repo2apptainer build ../repo2apptainer
