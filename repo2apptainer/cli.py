@@ -1,4 +1,5 @@
 import typer
+from repo2docker import __version__ as __repo2docker_version__
 
 from ._version import version as __version__
 from .app import Repo2Apptainer
@@ -11,6 +12,7 @@ app = typer.Typer(help='Convert a repository to a Apptainer (formerly Singularit
 def version_callback(value: bool):
     if value:
         typer.echo(f'Repo2Apptainer Version: {__version__}')
+        typer.echo(f'Repo2Docker version   : {__repo2docker_version__}')
         raise typer.Exit()
 
 
@@ -39,6 +41,7 @@ def run():
 def version():
     """Print the version"""
     console.print(f'Repo2Apptainer version: {__version__}')
+    console.print(f'Repo2Docker version   : {__repo2docker_version__}')
 
 
 def main():
