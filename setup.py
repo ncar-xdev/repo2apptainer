@@ -31,9 +31,9 @@ setup(
     url='https://repo2apptainer.readthedocs.io',
     project_urls={
         'Documentation': 'https://repo2apptainer.readthedocs.io',
-        'Source': 'https://github.com/andersy005/repo2apptainer',
-        'Tracker': 'https://github.com/andersy005/repo2apptainer/issues',
-        'Discussions/Support': 'https://github.com/andersy005/repo2apptainer/discussions',
+        'Source': 'https://github.com/ncar-xdev/repo2apptainer',
+        'Tracker': 'https://github.com/ncar-xdev/repo2apptainer/issues',
+        'Discussions/Support': 'https://github.com/ncar-xdev/repo2apptainer/discussions',
     },
     packages=find_packages(exclude=('tests',)),
     include_package_data=True,

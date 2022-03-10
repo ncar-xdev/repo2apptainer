@@ -8,7 +8,7 @@ on:
 jobs:
   build-artifacts:
     runs-on: ubuntu-latest
-    if: github.repository == 'andersy005/repo2apptainer'
+    if: github.repository == 'ncar-xdev/repo2apptainer'
     steps:
       - uses: actions/checkout@v2
         with:
