@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 """The setup script."""
+
 from setuptools import find_packages, setup
 
 with open('requirements.txt') as f:
